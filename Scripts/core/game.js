@@ -56,6 +56,11 @@ var game = (function () {
     var groundTexture;
     var groundTextureNormal;
     var clock;
+    var wall1Geometry;
+    var wall1PhysicsMaterial;
+    var wall1Material;
+    var wall1;
+    var wall1Texture;
     var playerGeometry;
     var playerMaterial;
     var player;
@@ -134,21 +139,38 @@ var game = (function () {
         groundTexture.wrapS = THREE.RepeatWrapping;
         groundTexture.wrapT = THREE.RepeatWrapping;
         groundTexture.repeat.set(15, 15);
-        groundTextureNormal = new THREE.TextureLoader().load('../../Assets/imagesRockErodeNormal.jpg');
+        groundTextureNormal = new THREE.TextureLoader().load('../../Assets/images/RockErodeNormal.png');
         groundTextureNormal.wrapS = THREE.RepeatWrapping;
         groundTextureNormal.wrapT = THREE.RepeatWrapping;
         groundTextureNormal.repeat.set(15, 15);
         groundMaterial = new PhongMaterial();
         groundMaterial.map = groundTexture;
-        groundMaterial.bumpMap = groundTextureNormal;
+        //groundMaterial.bumpMap = groundTextureNormal;
         groundMaterial.bumpScale = 0.2;
-        groundGeometry = new BoxGeometry(32, 1, 32);
+        groundGeometry = new BoxGeometry(100, 1, 100);
         groundPhysicsMaterial = Physijs.createMaterial(groundMaterial, 0, 0);
         ground = new Physijs.ConvexMesh(groundGeometry, groundPhysicsMaterial, 0);
         ground.receiveShadow = true;
         ground.name = "Ground";
         scene.add(ground);
         console.log("Added Burnt Ground to scene");
+        // Wall One
+        wall1Texture = new THREE.TextureLoader().load('../../Assets/images/RockSediment.jpg');
+        wall1Texture.wrapS = THREE.RepeatWrapping;
+        wall1Texture.wrapT = THREE.RepeatWrapping;
+        wall1Texture.repeat.set(15, 15);
+        wall1Material = new PhongMaterial();
+        wall1Material.map = wall1Texture;
+        wall1Material.bumpScale = 0.2;
+        wall1Geometry = new BoxGeometry(4, 10, 4);
+        wall1PhysicsMaterial = Physijs.createMaterial(wall1Material, 0, 0);
+        wall1 = new Physijs.BoxMesh(wall1Geometry, wall1PhysicsMaterial, 1);
+        wall1.position.set(0, 0, 10);
+        wall1.receiveShadow = true;
+        wall1.castShadow = true;
+        wall1.name = "Wall1";
+        ground.add(wall1);
+        console.log("Added wall1 to scene");
         //Player Cube (PC!)
         playerGeometry = new BoxGeometry(2, 4, 2);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
@@ -165,6 +187,9 @@ var game = (function () {
             if (event.name === "Ground") {
                 console.log("Booped ground");
                 isGrounded = true;
+            }
+            if (event.name === "Wall1") {
+                console.log("Booped wall1");
             }
             if (event.name === "Sphere") {
                 console.log("Booped sphere");
