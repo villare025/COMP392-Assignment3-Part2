@@ -56,24 +56,30 @@ var game = (() => {
     var blocker: HTMLElement;
     var instructions: HTMLElement;
     var spotLight: SpotLight;
+
     var groundGeometry: CubeGeometry;
     var groundPhysicsMaterial: Physijs.Material;
     var groundMaterial: PhongMaterial;
     var ground: Physijs.Mesh;
     var groundTexture: Texture;
     var groundTextureNormal: Texture;
-    var clock: Clock;
-    var wall1Geometry: CubeGeometry;
+
     var wall1PhysicsMaterial: Physijs.Material;
+    var wall1Geometry: CubeGeometry;
+    //var wall1Material: Physijs.Material;
     var wall1Material: PhongMaterial;
     var wall1: Physijs.Mesh;
     var wall1Texture: Texture;
+
     var playerGeometry: CubeGeometry;
     var playerMaterial: Physijs.Material;
     var player: Physijs.Mesh;
+
     var sphereGeometry: SphereGeometry;
     var sphereMaterial: Physijs.Material;
     var sphere: Physijs.Mesh;
+
+    var clock: Clock;
     var keyboardControls: objects.KeyboardControls;
     var mouseControls: objects.MouseControls;
     var isGrounded: boolean;
@@ -181,6 +187,7 @@ var game = (() => {
         console.log("Added Burnt Ground to scene");
         
         // Wall One
+        
         wall1Texture = new THREE.TextureLoader().load('../../Assets/images/RockSediment.jpg');
         wall1Texture.wrapS = THREE.RepeatWrapping;
         wall1Texture.wrapT = THREE.RepeatWrapping;
@@ -190,15 +197,17 @@ var game = (() => {
         wall1Material.map = wall1Texture;
         wall1Material.bumpScale = 0.2;
 
-        wall1Geometry = new BoxGeometry(4, 10, 4);
+        wall1Geometry = new BoxGeometry(2, 4, 2);
+        //wall1Material = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
         wall1PhysicsMaterial = Physijs.createMaterial(wall1Material, 0, 0);
-        wall1 = new Physijs.BoxMesh(wall1Geometry, wall1PhysicsMaterial, 1);
-        wall1.position.set(0, 0, 10);
+        wall1 = new Physijs.BoxMesh(wall1Geometry, wall1PhysicsMaterial, 0);
         wall1.receiveShadow = true;
         wall1.castShadow = true;
+        wall1.position.set(5, 0, 10);
         wall1.name = "Wall1";
-        ground.add(wall1);
-        console.log("Added wall1 to scene");
+        scene.add(wall1);
+        console.log("Added a Wall1 to the scene");
+
         
         //Player Cube (PC!)
         playerGeometry = new BoxGeometry(2, 4, 2);
@@ -401,7 +410,7 @@ var game = (() => {
     // Setup main camera for the scene
     function setupCamera(): void {
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 100);
-        //camera.position.set(0, 10, 30);
+        //camera.position.set(0, 50, 50);
         //camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }

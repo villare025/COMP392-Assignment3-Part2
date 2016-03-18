@@ -55,9 +55,9 @@ var game = (function () {
     var ground;
     var groundTexture;
     var groundTextureNormal;
-    var clock;
-    var wall1Geometry;
     var wall1PhysicsMaterial;
+    var wall1Geometry;
+    //var wall1Material: Physijs.Material;
     var wall1Material;
     var wall1;
     var wall1Texture;
@@ -67,6 +67,7 @@ var game = (function () {
     var sphereGeometry;
     var sphereMaterial;
     var sphere;
+    var clock;
     var keyboardControls;
     var mouseControls;
     var isGrounded;
@@ -162,15 +163,16 @@ var game = (function () {
         wall1Material = new PhongMaterial();
         wall1Material.map = wall1Texture;
         wall1Material.bumpScale = 0.2;
-        wall1Geometry = new BoxGeometry(4, 10, 4);
+        wall1Geometry = new BoxGeometry(2, 4, 2);
+        //wall1Material = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
         wall1PhysicsMaterial = Physijs.createMaterial(wall1Material, 0, 0);
-        wall1 = new Physijs.BoxMesh(wall1Geometry, wall1PhysicsMaterial, 1);
-        wall1.position.set(0, 0, 10);
+        wall1 = new Physijs.BoxMesh(wall1Geometry, wall1PhysicsMaterial, 0);
         wall1.receiveShadow = true;
         wall1.castShadow = true;
+        wall1.position.set(5, 0, 10);
         wall1.name = "Wall1";
-        ground.add(wall1);
-        console.log("Added wall1 to scene");
+        scene.add(wall1);
+        console.log("Added a Wall1 to the scene");
         //Player Cube (PC!)
         playerGeometry = new BoxGeometry(2, 4, 2);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
@@ -342,7 +344,7 @@ var game = (function () {
     // Setup main camera for the scene
     function setupCamera() {
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 100);
-        //camera.position.set(0, 10, 30);
+        //camera.position.set(0, 50, 50);
         //camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
