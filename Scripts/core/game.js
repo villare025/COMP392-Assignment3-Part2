@@ -56,6 +56,7 @@ var game = (function () {
     var sphereMaterial;
     var sphere;
     var keyboardControls;
+    var mouseControls;
     var isGrounded;
     var velocity = new Vector3(0, 0, 0);
     var prevTime = 0;
@@ -68,8 +69,11 @@ var game = (function () {
             'pointerLockElement' in document
                 || 'mozPointerLockElement' in document
                 || 'webkitPointerLockElement' in document;
+        // Instantiate Game Controls
+        keyboardControls = new objects.KeyboardControls();
+        mouseControls = new objects.MouseControls();
+        // Check to see if we have pointerLock
         if (havePointerLock) {
-            keyboardControls = new objects.KeyboardControls;
             element = document.body;
             instructions.addEventListener('click', function () {
                 //Request for pointerlock
@@ -86,32 +90,14 @@ var game = (function () {
             document.addEventListener('mozpointerlockerror', pointerLockError);
             document.addEventListener('webkitpointerlockerror', pointerLockError);
         }
-        function pointerLockChange(event) {
-            if (document.pointerLockElement === element) {
-                //enable mouse and keyboard controls
-                keyboardControls.enabled = true;
-                blocker.style.display = 'none';
-            }
-            else {
-                //disable mouse and keyboard controls
-                keyboardControls.enabled = false;
-                blocker.style.display = '-webkit-box';
-                blocker.style.display = '-moz-box';
-                blocker.style.display = 'box';
-                instructions.style.display = '';
-                console.log("PointerLock disabled");
-            }
-        }
-        function pointerLockError(event) {
-            instructions.style.display = '';
-            console.log("PointerLock Error Detected!!! :(");
-        }
+        // Scene changes for Physijs
         scene.name = "Main";
         scene.fog = new THREE.Fog(0xffffff, 0, 750);
         scene.setGravity(new THREE.Vector3(0, -10, 0));
         scene.addEventListener('update', function () {
             scene.simulate(undefined, 2);
         });
+        // setup a THREE.JS Clock object
         clock = new Clock();
         setupRenderer(); // setup the default renderer
         setupCamera(); // setup the camera
@@ -142,7 +128,7 @@ var game = (function () {
         scene.add(ground);
         console.log("Added Burnt Ground to scene");
         //Player Cube (PC!)
-        playerGeometry = new BoxGeometry(2, 2, 2);
+        playerGeometry = new BoxGeometry(2, 4, 2);
         playerMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
         player = new Physijs.BoxMesh(playerGeometry, playerMaterial, 1);
         player.position.set(0, 30, 10);
@@ -151,7 +137,9 @@ var game = (function () {
         player.name = "Player";
         scene.add(player);
         console.log("Added Player to scene");
+        // Collision Check
         player.addEventListener('collision', function (event) {
+            console.log(event);
             if (event.name === "Ground") {
                 console.log("Booped ground");
                 isGrounded = true;
@@ -160,6 +148,9 @@ var game = (function () {
                 console.log("Booped sphere");
             }
         });
+        // create parent-child relationship with camera and player
+        player.add(camera);
+        camera.position.set(0, 1, 0);
         //Sphere Object
         sphereGeometry = new SphereGeometry(2, 32, 32);
         sphereMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0x00ff00 }), 0.4, 0);
@@ -182,6 +173,28 @@ var game = (function () {
         scene.simulate();
         window.addEventListener('resize', onWindowResize, false);
     }
+    function pointerLockChange(event) {
+        if (document.pointerLockElement === element) {
+            //enable mouse and keyboard controls
+            keyboardControls.enabled = true;
+            mouseControls.enabled = true;
+            blocker.style.display = 'none';
+        }
+        else {
+            //disable mouse and keyboard controls
+            keyboardControls.enabled = false;
+            mouseControls.enabled = false;
+            blocker.style.display = '-webkit-box';
+            blocker.style.display = '-moz-box';
+            blocker.style.display = 'box';
+            instructions.style.display = '';
+            console.log("PointerLock disabled");
+        }
+    }
+    function pointerLockError(event) {
+        instructions.style.display = '';
+        console.log("PointerLock Error Detected!!! :(");
+    }
     // Window Resize Event Handler
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -203,41 +216,64 @@ var game = (function () {
     // Setup main game loop
     function gameLoop() {
         stats.update();
-        if (keyboardControls.enabled) {
-            var time = performance.now();
-            var delta = (time - prevTime) / 1000;
-            if (isGrounded) {
-                if (keyboardControls.moveForward) {
-                    console.log("Nyoom (Moving Foward)");
-                    velocity.z -= 400.0 * delta;
-                }
-                if (keyboardControls.moveBackward) {
-                    console.log("Mooyn (Moving Backward)");
-                    velocity.z += 400.0 * delta;
-                }
-                if (keyboardControls.moveRight) {
-                    console.log("Myoon (Moving Right)");
-                    velocity.x += 400.0 * delta;
-                }
-                if (keyboardControls.moveLeft) {
-                    console.log("Nooym (Moving Left)");
-                    velocity.x -= 400.0 * delta;
-                }
-                if (keyboardControls.jump) {
-                    console.log("Bounce (Jumping)");
-                    velocity.y += 2000 * delta;
-                    if (player.position.y > 4) {
-                        isGrounded = false;
-                    }
-                }
-            }
-        }
-        player.applyCentralForce(velocity);
-        prevTime = time;
+        checkControls();
         // render using requestAnimationFrame
         requestAnimationFrame(gameLoop);
         // render the scene
         renderer.render(scene, camera);
+    }
+    // Check Controls Function
+    function checkControls() {
+        if (keyboardControls.enabled) {
+            velocity = new Vector3();
+            var time = performance.now();
+            var delta = (time - prevTime) / 1000;
+            if (isGrounded) {
+                var direction = new Vector3(0, 0, 0);
+                if (keyboardControls.moveForward) {
+                    velocity.z -= 400.0 * delta;
+                }
+                if (keyboardControls.moveLeft) {
+                    velocity.x -= 400.0 * delta;
+                }
+                if (keyboardControls.moveBackward) {
+                    velocity.z += 400.0 * delta;
+                }
+                if (keyboardControls.moveRight) {
+                    velocity.x += 400.0 * delta;
+                }
+                if (keyboardControls.jump) {
+                    velocity.y += 4000.0 * delta;
+                    if (player.position.y > 4) {
+                        isGrounded = false;
+                    }
+                }
+                player.setDamping(0.7, 0.1);
+                // Changing player's rotation
+                player.setAngularVelocity(new Vector3(0, mouseControls.yaw, 0));
+                direction.addVectors(direction, velocity);
+                direction.applyQuaternion(player.quaternion);
+                if (Math.abs(player.getLinearVelocity().x) < 20 && Math.abs(player.getLinearVelocity().y) < 10) {
+                    player.applyCentralForce(direction);
+                }
+                cameraLook();
+            } // isGrounded ends
+            //reset Pitch and Yaw
+            mouseControls.pitch = 0;
+            mouseControls.yaw = 0;
+            prevTime = time;
+        } // Controls Enabled ends
+        else {
+            player.setAngularVelocity(new Vector3(0, 0, 0));
+        }
+    }
+    // Camera Look function
+    function cameraLook() {
+        var zenith = THREE.Math.degToRad(90);
+        var nadir = THREE.Math.degToRad(-90);
+        var cameraPitch = camera.rotation.x + mouseControls.pitch;
+        // Constrain the Camera Pitch
+        camera.rotation.x = THREE.Math.clamp(cameraPitch, nadir, zenith);
     }
     // Setup default renderer
     function setupRenderer() {
@@ -251,8 +287,8 @@ var game = (function () {
     // Setup main camera for the scene
     function setupCamera() {
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 100);
-        camera.position.set(0, 10, 30);
-        camera.lookAt(new Vector3(0, 0, 0));
+        //camera.position.set(0, 10, 30);
+        //camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
     window.onload = init;

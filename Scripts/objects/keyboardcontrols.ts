@@ -10,9 +10,9 @@ module objects {
         public enabled: boolean;
         // CONSTRUCTOR ++++++++++++++++++++++++++    
         constructor() {
+            this.enabled = false;
             document.addEventListener('keydown', this.onKeyDown.bind(this), false);
             document.addEventListener('keyup', this.onKeyUp.bind(this), false);
-            
         }
 
         //PUBLIC METHODS
@@ -41,7 +41,6 @@ module objects {
         }
 
         public onKeyUp(event: KeyboardEvent): void {
-            
              switch (event.keyCode) {
                 case 38: //Up Arrow
                 case 87: //W Key
