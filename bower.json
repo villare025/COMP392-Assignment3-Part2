@@ -1,0 +1,26 @@
+{
+  "name": "comp392-Assignment-3",
+  "authors": [
+    "Angelina Gutierrez <angelina.ogutierrez@gmail.com>",
+    "Elaine Mae Villarino <evillari@my.centennialcollege.ca>"
+  ],
+  "description": "COMP392-Assignment-3 for Advanced Graphics",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "https://github.com/Flame2Ashes/COMP392_Assignment_3.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "Scripts/lib"
+  ],
+  "dependencies": {
+    "three.js": "threejs#*",
+    "dat-gui": "~0.5.1",
+    "stats.js": "*",
+    "Physijs": "physijs#*"
+  }
+}
