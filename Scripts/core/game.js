@@ -12,7 +12,11 @@ var Geometry = THREE.Geometry;
 var AxisHelper = THREE.AxisHelper;
 var LambertMaterial = THREE.MeshLambertMaterial;
 var MeshBasicMaterial = THREE.MeshBasicMaterial;
+var LineBasicMaterial = THREE.LineBasicMaterial;
+var PhongMaterial = THREE.MeshPhongMaterial;
 var Material = THREE.Material;
+var Texture = THREE.Texture;
+var Line = THREE.Line;
 var Mesh = THREE.Mesh;
 var Object3D = THREE.Object3D;
 var SpotLight = THREE.SpotLight;
@@ -46,8 +50,11 @@ var game = (function () {
     var instructions;
     var spotLight;
     var groundGeometry;
+    var groundPhysicsMaterial;
     var groundMaterial;
     var ground;
+    var groundTexture;
+    var groundTextureNormal;
     var clock;
     var playerGeometry;
     var playerMaterial;
@@ -60,6 +67,9 @@ var game = (function () {
     var isGrounded;
     var velocity = new Vector3(0, 0, 0);
     var prevTime = 0;
+    var directionLineMaterial;
+    var directionLineGeometry;
+    var directionLine;
     function init() {
         // Create to HTMLElements
         blocker = document.getElementById("blocker");
@@ -119,10 +129,22 @@ var game = (function () {
         spotLight.name = "Spot Light";
         scene.add(spotLight);
         console.log("Added spotLight to scene");
-        // Burnt Ground
+        // Ground Object
+        groundTexture = new THREE.TextureLoader().load('../../Assets/images/RockErode.jpg');
+        groundTexture.wrapS = THREE.RepeatWrapping;
+        groundTexture.wrapT = THREE.RepeatWrapping;
+        groundTexture.repeat.set(15, 15);
+        groundTextureNormal = new THREE.TextureLoader().load('../../Assets/imagesRockErodeNormal.jpg');
+        groundTextureNormal.wrapS = THREE.RepeatWrapping;
+        groundTextureNormal.wrapT = THREE.RepeatWrapping;
+        groundTextureNormal.repeat.set(15, 15);
+        groundMaterial = new PhongMaterial();
+        groundMaterial.map = groundTexture;
+        groundMaterial.bumpMap = groundTextureNormal;
+        groundMaterial.bumpScale = 0.2;
         groundGeometry = new BoxGeometry(32, 1, 32);
-        groundMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xe75d14 }), 0.4, 0);
-        ground = new Physijs.ConvexMesh(groundGeometry, groundMaterial, 0);
+        groundPhysicsMaterial = Physijs.createMaterial(groundMaterial, 0, 0);
+        ground = new Physijs.ConvexMesh(groundGeometry, groundPhysicsMaterial, 0);
         ground.receiveShadow = true;
         ground.name = "Ground";
         scene.add(ground);
@@ -148,6 +170,14 @@ var game = (function () {
                 console.log("Booped sphere");
             }
         });
+        // Add DirectionLine
+        directionLineMaterial = new LineBasicMaterial({ color: 0xffff00 });
+        directionLineGeometry = new Geometry();
+        directionLineGeometry.vertices.push(new Vector3(0, 0, 0)); // line origin
+        directionLineGeometry.vertices.push(new Vector3(0, 0, -50)); // end of the line
+        directionLine = new Line(directionLineGeometry, directionLineMaterial);
+        player.add(directionLine);
+        console.log("Added DirectionLine to the Player");
         // create parent-child relationship with camera and player
         player.add(camera);
         camera.position.set(0, 1, 0);
@@ -296,5 +326,4 @@ var game = (function () {
         scene: scene
     };
 })();
-
 //# sourceMappingURL=game.js.map

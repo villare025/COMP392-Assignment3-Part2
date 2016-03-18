@@ -14,7 +14,11 @@ import Geometry = THREE.Geometry;
 import AxisHelper = THREE.AxisHelper;
 import LambertMaterial = THREE.MeshLambertMaterial;
 import MeshBasicMaterial = THREE.MeshBasicMaterial;
+import LineBasicMaterial = THREE.LineBasicMaterial;
+import PhongMaterial = THREE.MeshPhongMaterial;
 import Material = THREE.Material;
+import Texture = THREE.Texture;
+import Line = THREE.Line;
 import Mesh = THREE.Mesh;
 import Object3D = THREE.Object3D;
 import SpotLight = THREE.SpotLight;
@@ -53,8 +57,11 @@ var game = (() => {
     var instructions: HTMLElement;
     var spotLight: SpotLight;
     var groundGeometry: CubeGeometry;
-    var groundMaterial: Physijs.Material;
+    var groundPhysicsMaterial: Physijs.Material;
+    var groundMaterial: PhongMaterial;
     var ground: Physijs.Mesh;
+    var groundTexture: Texture;
+    var groundTextureNormal: Texture;
     var clock: Clock;
     var playerGeometry: CubeGeometry;
     var playerMaterial: Physijs.Material;
@@ -67,6 +74,9 @@ var game = (() => {
     var isGrounded: boolean;
     var velocity: Vector3 = new Vector3(0, 0, 0);
     var prevTime: number = 0;
+    var directionLineMaterial: LineBasicMaterial;
+    var directionLineGeometry: Geometry;
+    var directionLine: Line;
 
     function init() {
         // Create to HTMLElements
@@ -122,7 +132,6 @@ var game = (() => {
 
         setupCamera(); // setup the camera
 
-
         // Spot Light
         spotLight = new SpotLight(0xffffff);
         spotLight.position.set(20, 40, -15);
@@ -142,10 +151,25 @@ var game = (() => {
         scene.add(spotLight);
         console.log("Added spotLight to scene");
 
-        // Burnt Ground
+        // Ground Object
+        groundTexture = new THREE.TextureLoader().load('../../Assets/images/RockErode.jpg');
+        groundTexture.wrapS = THREE.RepeatWrapping;
+        groundTexture.wrapT = THREE.RepeatWrapping;
+        groundTexture.repeat.set(15, 15);
+
+        groundTextureNormal = new THREE.TextureLoader().load('../../Assets/imagesRockErodeNormal.jpg');
+        groundTextureNormal.wrapS = THREE.RepeatWrapping;
+        groundTextureNormal.wrapT = THREE.RepeatWrapping;
+        groundTextureNormal.repeat.set(15, 15);
+
+        groundMaterial = new PhongMaterial();
+        groundMaterial.map = groundTexture;
+        groundMaterial.bumpMap = groundTextureNormal;
+        groundMaterial.bumpScale = 0.2;
+
         groundGeometry = new BoxGeometry(32, 1, 32);
-        groundMaterial = Physijs.createMaterial(new LambertMaterial({ color: 0xe75d14 }), 0.4, 0);
-        ground = new Physijs.ConvexMesh(groundGeometry, groundMaterial, 0);
+        groundPhysicsMaterial = Physijs.createMaterial(groundMaterial, 0, 0);
+        ground = new Physijs.ConvexMesh(groundGeometry, groundPhysicsMaterial, 0);
         ground.receiveShadow = true;
         ground.name = "Ground";
         scene.add(ground);
@@ -174,6 +198,15 @@ var game = (() => {
             }
         });
         
+        // Add DirectionLine
+        directionLineMaterial = new LineBasicMaterial({ color: 0xffff00 });
+        directionLineGeometry = new Geometry();
+        directionLineGeometry.vertices.push(new Vector3(0, 0, 0)); // line origin
+        directionLineGeometry.vertices.push(new Vector3(0, 0, -50)); // end of the line
+        directionLine = new Line(directionLineGeometry, directionLineMaterial);
+        player.add(directionLine);
+        console.log("Added DirectionLine to the Player");
+
         // create parent-child relationship with camera and player
         player.add(camera);
         camera.position.set(0, 1, 0);
@@ -188,7 +221,6 @@ var game = (() => {
         sphere.name = "Sphere";
         scene.add(sphere);
         console.log("Added a sphere to the scene");
-
 
         // add controls
         gui = new GUI();
