@@ -771,7 +771,7 @@ var game = (() => {
         door1 = new Physijs.BoxMesh(door1Geometry, door1PhysicsMaterial, 0);
         door1.receiveShadow = true;
         door1.castShadow = true;
-        door1.position.set(60, 7, -51);
+        door1.position.set(60, 5, -51);
         door1.name = "Door1";
         scene.add(door1);
         console.log("Added a Door1 to the scene");
@@ -952,8 +952,8 @@ var game = (() => {
         console.log("Added DirectionLine to the Player");
 
         // create parent-child relationship with camera and player
-        //player.add(camera);
-        //camera.position.set(0, 1, 0);
+        player.add(camera);
+        camera.position.set(0, 1, 0);
         
         //Sphere Object
         sphereGeometry = new SphereGeometry(2, 32, 32);
@@ -1117,8 +1117,8 @@ var game = (() => {
     // Setup main camera for the scene
     function setupCamera(): void {
         camera = new PerspectiveCamera(35, config.Screen.RATIO, 0.1, 300);
-        camera.position.set(0, 100, 100);
-        camera.lookAt(new Vector3(0, 0, 0));
+        //camera.position.set(0, 100, 100);
+        //camera.lookAt(new Vector3(0, 0, 0));
         console.log("Finished setting up Camera...");
     }
 
