@@ -156,6 +156,46 @@ var game = (() => {
     var road22PhysicsMaterial: Physijs.Material;
     var road22: Physijs.Mesh;
     
+    var road23Geometry: CubeGeometry;
+    var road23PhysicsMaterial: Physijs.Material;
+    var road23: Physijs.Mesh;
+    
+    var road24Geometry: CubeGeometry;
+    var road24PhysicsMaterial: Physijs.Material;
+    var road24: Physijs.Mesh;
+    
+    var road25Geometry: CubeGeometry;
+    var road25PhysicsMaterial: Physijs.Material;
+    var road25: Physijs.Mesh;
+    
+    var road26Geometry: CubeGeometry;
+    var road26PhysicsMaterial: Physijs.Material;
+    var road26: Physijs.Mesh;
+    
+    var road27Geometry: CubeGeometry;
+    var road27PhysicsMaterial: Physijs.Material;
+    var road27: Physijs.Mesh;
+    
+    var road28Geometry: CubeGeometry;
+    var road28PhysicsMaterial: Physijs.Material;
+    var road28: Physijs.Mesh;
+    
+    var road29Geometry: CubeGeometry;
+    var road29PhysicsMaterial: Physijs.Material;
+    var road29: Physijs.Mesh;
+    
+    var road30Geometry: CubeGeometry;
+    var road30PhysicsMaterial: Physijs.Material;
+    var road30: Physijs.Mesh;
+    
+    var road31Geometry: CubeGeometry;
+    var road31PhysicsMaterial: Physijs.Material;
+    var road31: Physijs.Mesh;
+    
+    var road32Geometry: CubeGeometry;
+    var road32PhysicsMaterial: Physijs.Material;
+    var road32: Physijs.Mesh;
+    
     var platform1PhysicsMaterial: Physijs.Material;
     var platform1Geometry: CubeGeometry;
     var platform1Material: PhongMaterial;
@@ -177,7 +217,13 @@ var game = (() => {
     var playerGeometry: CubeGeometry;
     var playerMaterial: Physijs.Material;
     var player: Physijs.Mesh;
-
+        
+    var door1PhysicsMaterial: Physijs.Material;
+    var door1Geometry: CubeGeometry;
+    var door1Material: PhongMaterial;
+    var door1: Physijs.Mesh;
+    var door1Texture: Texture;
+    
     var sphereGeometry: SphereGeometry;
     var sphereMaterial: Physijs.Material;
     var sphere: Physijs.Mesh;
@@ -537,9 +583,8 @@ var game = (() => {
         scene.add(road21);
         console.log("Added a Road 21 to the scene");
         
-        
         // Road Twenty-Two
-        road22Geometry = new BoxGeometry(2.15, 4, 55);
+        road22Geometry = new BoxGeometry(0.5, 4, 55);
         road22PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
         road22 = new Physijs.BoxMesh(road22Geometry, road22PhysicsMaterial, 0);
         road22.receiveShadow = true;
@@ -548,6 +593,116 @@ var game = (() => {
         road22.name = "Road22";
         scene.add(road22);
         console.log("Added a Road 22 to the scene");
+                       
+        // Road Twenty-Three
+        road23Geometry = new BoxGeometry(55, 4, 0.5);
+        road23PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road23 = new Physijs.BoxMesh(road23Geometry, road23PhysicsMaterial, 0);
+        road23.receiveShadow = true;
+        road23.castShadow = true;
+        road23.position.set(0, 0, 0);
+        road23.name = "Road23";
+        scene.add(road23);
+        console.log("Added a Road 23 to the scene");
+        
+        // Road Twenty-Four
+        road24Geometry = new BoxGeometry(70, 4, 0.75);
+        road24PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road24 = new Physijs.BoxMesh(road24Geometry, road24PhysicsMaterial, 0);
+        road24.receiveShadow = true;
+        road24.castShadow = true;
+        road24.position.set(-25, 0, -60);
+        road24.name = "Road24";
+        scene.add(road24);
+        console.log("Added a Road 24 to the scene");
+        
+        // Road Twenty-Five
+        road25Geometry = new BoxGeometry(30, 4, 1.75);
+        road25PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road25 = new Physijs.BoxMesh(road25Geometry, road25PhysicsMaterial, 0);
+        road25.receiveShadow = true;
+        road25.castShadow = true;
+        road25.position.set(-60, 0, -40);
+        road25.name = "Road25";
+        scene.add(road25);
+        console.log("Added a Road 25 to the scene");
+        
+        // Road Twenty-Six
+        road26Geometry = new BoxGeometry(30, 4, 0.5);
+        road26PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road26 = new Physijs.BoxMesh(road26Geometry, road26PhysicsMaterial, 0);
+        road26.receiveShadow = true;
+        road26.castShadow = true;
+        road26.position.set(-60, 0, -10);
+        road26.name = "Road26";
+        scene.add(road26);
+        console.log("Added a Road 26 to the scene");
+        
+        // Road Twenty-Seven
+        road27Geometry = new BoxGeometry(0.5, 4, 35);
+        road27PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road27 = new Physijs.BoxMesh(road27Geometry, road27PhysicsMaterial, 0);
+        road27.receiveShadow = true;
+        road27.castShadow = true;
+        road27.position.set(-60, 0, -25);
+        road27.name = "Road27";
+        scene.add(road27);
+        console.log("Added a Road 27 to the scene");
+                
+        // Road Twenty-Eight
+        road28Geometry = new BoxGeometry(1.5, 4, 35);
+        road28PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road28 = new Physijs.BoxMesh(road28Geometry, road28PhysicsMaterial, 0);
+        road28.receiveShadow = true;
+        road28.castShadow = true;
+        road28.position.set(70, 0, -25);
+        road28.name = "Road28";
+        scene.add(road28);
+        console.log("Added a Road 28 to the scene");
+        
+        // Road Twenty-Nine
+        road29Geometry = new BoxGeometry(1.5, 4, 35);
+        road29PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road29 = new Physijs.BoxMesh(road29Geometry, road29PhysicsMaterial, 0);
+        road29.receiveShadow = true;
+        road29.castShadow = true;
+        road29.position.set(70, 0, 50);
+        road29.name = "Road29";
+        scene.add(road29);
+        console.log("Added a Road 29 to the scene");
+                
+        // Road Thirty
+        road30Geometry = new BoxGeometry(45, 4, 1.5);
+        road30PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road30 = new Physijs.BoxMesh(road30Geometry, road30PhysicsMaterial, 0);
+        road30.receiveShadow = true;
+        road30.castShadow = true;
+        road30.position.set(50, 0, 40);
+        road30.name = "Road30";
+        scene.add(road30);
+        console.log("Added a Road 30 to the scene");
+                
+        // Road Thirty-One
+        road31Geometry = new BoxGeometry(45, 4, 1.5);
+        road31PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road31 = new Physijs.BoxMesh(road31Geometry, road31PhysicsMaterial, 0);
+        road31.receiveShadow = true;
+        road31.castShadow = true;
+        road31.position.set(40, 0, -65);
+        road31.name = "Road31";
+        scene.add(road31);
+        console.log("Added a Road 31 to the scene");
+        
+        // Road Thirty-Two
+        road32Geometry = new BoxGeometry(0.5, 4, 60);
+        road32PhysicsMaterial = Physijs.createMaterial(roadMainMaterial, 0, 0);
+        road32 = new Physijs.BoxMesh(road32Geometry, road32PhysicsMaterial, 0);
+        road32.receiveShadow = true;
+        road32.castShadow = true;
+        road32.position.set(-40, 0, -45);
+        road32.name = "Road32";
+        scene.add(road32);
+        console.log("Added a Road 32 to the scene");
         
         // Platform Components
         
@@ -602,6 +757,24 @@ var game = (() => {
         scene.add(platform3);
         console.log("Added a Platform 3 to the scene");
         
+        // Door Components
+        
+        // Door One
+        door1Texture = new THREE.TextureLoader().load('../../Assets/images/doorsTextureNo6901.jpg');
+
+        door1Material = new PhongMaterial();
+        door1Material.map = door1Texture;
+        door1Material.bumpScale = 0.2;
+
+        door1Geometry = new BoxGeometry(3, 7, 0.5);
+        door1PhysicsMaterial = Physijs.createMaterial(door1Material, 0, 0);
+        door1 = new Physijs.BoxMesh(door1Geometry, door1PhysicsMaterial, 0);
+        door1.receiveShadow = true;
+        door1.castShadow = true;
+        door1.position.set(60, 7, -51);
+        door1.name = "Door1";
+        scene.add(door1);
+        console.log("Added a Door1 to the scene");
         
         //Player Cube (PC!)
         playerGeometry = new BoxGeometry(2, 4, 2);
@@ -661,6 +834,94 @@ var game = (() => {
                 console.log("Booped Road10");
                 isGrounded = true;
             }
+            if (event.name === "Road11") {
+                console.log("Booped Road11");
+                isGrounded = true;
+            }
+            if (event.name === "Road12") {
+                console.log("Booped Road12");
+                isGrounded = true;
+            }
+            if (event.name === "Road13") {
+                console.log("Booped Road13");
+                isGrounded = true;
+            }
+            if (event.name === "Road14") {
+                console.log("Booped Road14");
+                isGrounded = true;
+            }
+            if (event.name === "Road15") {
+                console.log("Booped Road15");
+                isGrounded = true;
+            }
+            if (event.name === "Road16") {
+                console.log("Booped Road16");
+                isGrounded = true;
+            }
+            if (event.name === "Road17") {
+                console.log("Booped Road17");
+                isGrounded = true;
+            }
+            if (event.name === "Road18") {
+                console.log("Booped Road18");
+                isGrounded = true;
+            }
+            if (event.name === "Road19") {
+                console.log("Booped Road19");
+                isGrounded = true;
+            }
+            if (event.name === "Road20") {
+                console.log("Booped Road20");
+                isGrounded = true;
+            }
+            if (event.name === "Road21") {
+                console.log("Booped Road21");
+                isGrounded = true;
+            }
+            if (event.name === "Road22") {
+                console.log("Booped Road22");
+                isGrounded = true;
+            }
+            if (event.name === "Road23") {
+                console.log("Booped Road23");
+                isGrounded = true;
+            }
+            if (event.name === "Road24") {
+                console.log("Booped Road24");
+                isGrounded = true;
+            }
+            if (event.name === "Road25") {
+                console.log("Booped Road25");
+                isGrounded = true;
+            }
+            if (event.name === "Road26") {
+                console.log("Booped Road26");
+                isGrounded = true;
+            }
+            if (event.name === "Road27") {
+                console.log("Booped Road27");
+                isGrounded = true;
+            }
+            if (event.name === "Road28") {
+                console.log("Booped Road28");
+                isGrounded = true;
+            }
+            if (event.name === "Road29") {
+                console.log("Booped Road29");
+                isGrounded = true;
+            }
+            if (event.name === "Road30") {
+                console.log("Booped Road30");
+                isGrounded = true;
+            }
+            if (event.name === "Road31") {
+                console.log("Booped Road31");
+                isGrounded = true;
+            }
+            if (event.name === "Road32") {
+                console.log("Booped Road32");
+                isGrounded = true;
+            }
             if (event.name === "Platform1") {
                 console.log("Booped Platform 1");
                 isGrounded = true;
@@ -672,6 +933,9 @@ var game = (() => {
             if (event.name === "Platform3") {
                 console.log("Booped Platform 3");
                 isGrounded = true;
+            }
+            if (event.name === "Door1") {
+                console.log("Booped Door 1");
             }
             if (event.name === "Sphere") {
                 console.log("Booped sphere");
